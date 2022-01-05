@@ -1,8 +1,6 @@
 import { useContext } from "react";
 import {StoreContext} from '../index';
 
-function useStore(){
+export default function useStore(){
 	return useContext(StoreContext);
 } 
-
-export default useStore;

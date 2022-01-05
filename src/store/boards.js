@@ -4,7 +4,7 @@ import apiCall from '../api';
 const Task = types.model('Task', {
 	id: types.identifier,
 	title: types.string,
-	description: types.string,
+	description: types.maybe(types.string),
 	assignee: types.string,
 });
 
@@ -17,11 +17,13 @@ const BoardSection = types.model('BoardSection',{
 		load: flow(function*(){
 			const {id: boardID} = getParent (self, 2);
 			const {id: status} = self;
-
-			const {tasks} = yield apiCall.get(`boards/${boardID}/tasks/${status}`)
+			const {tasks} = yield apiCall.get(`boards/${boardID}/tasks/${status}`);
 
 			self.tasks = tasks;
-		})
+		}),
+		afterCreate(){
+			self.load();
+		},
 	}
 });
 
@@ -31,8 +33,8 @@ const Board = types.model ('Board',{
 	sections: types.array(BoardSection),
 })
 
-const BoardStore = types.model( 'UserStore', {
-	boards: types.maybe(types.array(Board)),
+const BoardStore = types.model( 'BoardStore', {
+	boards: types.array(Board),
 	active: types.safeReference(Board),
 }).actions(self => {
 	return {
@@ -44,6 +46,6 @@ const BoardStore = types.model( 'UserStore', {
 			self.load();
 		}
 	}
-})
+}) 
 
 export default BoardStore;

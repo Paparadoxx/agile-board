@@ -4,14 +4,13 @@ import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 
 import Column from './column';
 import { Box, Grid, Paper, Typography } from '@mui/material';
+import { observer } from 'mobx-react-lite';
 
-function getListStyle(isDraggingOver){
-	return {
+const getListStyle = (isDraggingOver) => ({
 	backgroudColor: isDraggingOver ? 'Lightblue' : 'Lightgray',
 	minHeight: 500,
 	padding: 8,
-	}
-};
+	});
 
 function Dashboard(){
 	const {boards} = useStore();
@@ -21,12 +20,12 @@ function Dashboard(){
 			<DragDropContext onDragEnd={()=>{
 			}}>
 			<Grid container spacing={3}>
-				{boards.active?.sections.map(section =>{
+				{boards?.active?.sections.map(section =>{
 					return (
 						<Grid item key={section.id} xs>
 							<Paper>
-								<Box p={1} display="flex" alignItems="center" justifyContent="center">
-									<Typography variant='h5'>{section?.title}</Typography>
+								<Box p={1} display="flex" alignItems="center" justifyContent="space-between">
+									<Typography variant='h5'>{section.title}</Typography>
 								</Box>
 								<Droppable droppableId={section.id}>
 									{(provided, snapshot) => (
@@ -35,10 +34,9 @@ function Dashboard(){
 										 ref={provided.innerRef}
 										 style={getListStyle(snapshot.isDraggingOver)}
 										 >
-											 <Column section={section}/>
-											 {provided.placeholder}
+											<Column section={section}/>
+											{provided.placeholder}
 										</div>
-										
 									)}
 								</Droppable>
 							</Paper>
@@ -51,4 +49,4 @@ function Dashboard(){
 	)
 }
 
-export default Dashboard;
+export default observer(Dashboard);
