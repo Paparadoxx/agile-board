@@ -5,9 +5,11 @@ import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import Column from './column';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
+import { useCallback } from 'react';
 
 const getListStyle = (isDraggingOver) => ({
-	backgroudColor: isDraggingOver ? 'Lightblue' : 'Lightgray',
+	backgroundColor: isDraggingOver ? 'Lightblue' : '#EAE6CA',
+	transition: 'backgroundColor ease 0.1s',
 	minHeight: 500,
 	padding: 8,
 	});
@@ -15,10 +17,16 @@ const getListStyle = (isDraggingOver) => ({
 function Dashboard(){
 	const {boards} = useStore();
 
+	const onDragEnd = useCallback((event) => {
+		const {source, destination, draggableId: taskId} = event;
+
+		boards.active.moveTask(taskId, source, destination);
+
+	},[boards]);
+
 	return (
 		<Box p={2}>
-			<DragDropContext onDragEnd={()=>{
-			}}>
+			<DragDropContext onDragEnd={onDragEnd}>
 			<Grid container spacing={3}>
 				{boards?.active?.sections.map(section =>{
 					return (

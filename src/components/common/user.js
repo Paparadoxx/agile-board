@@ -5,9 +5,9 @@ import { Box } from "@mui/system";
 const User = ({user}) => {
 
 	return (
-		<Box display='flex' alignItems='center'>
+		<Box display='flex' justifyContent='flex-end'>
 			<span 
-				style={{margin: 10}}
+				style={{padding:10}}
 			>
 				{user?.name}
 			</span>

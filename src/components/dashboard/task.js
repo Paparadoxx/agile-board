@@ -1,6 +1,6 @@
 import { CardContent, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
-
+import User from "../common/user";
 
 function Task({task}){
 	return(
@@ -11,6 +11,7 @@ function Task({task}){
 			<Typography color="textSecondary" gutterBottom>
 				{task.description}
 			</Typography>
+			<User user={task.assignee}/>
 		</CardContent>
 	)
 }
