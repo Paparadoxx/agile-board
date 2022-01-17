@@ -1,4 +1,4 @@
-import { AppBar, FormControl, Grid, MenuItem, Select, Toolbar, Typography } from '@mui/material';
+import { AppBar, FormControl, Grid, Select, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { observer } from 'mobx-react-lite';
 import useStore from '../../hooks/useStore';
@@ -22,7 +22,11 @@ const Header = () => {
 							labelId="simple-select-autowidth-label-dashboard"
 							id="simple-select-autowidth-dashboard"
 							value={boards?.active?.id || ''}
-							onChange={()=>{}}
+							onChange={(event)=>{
+								const {value} = event.target;
+								boards.selectBoard(value);
+							}}
+							native
 							autoWidth
 							label=""
 							style={{
@@ -30,17 +34,17 @@ const Header = () => {
 								marginLeft: 10
 							}}
         				> 
-          				<MenuItem value='' disabled>
-								 -
-         				</MenuItem>
+          				<option value='' disabled>
+								-
+         				</option>
 							{boards.list.map((board)=> {
 								return (
-									<MenuItem 
+									<option 
 									key={board?.id} 
 									value ={board?.id}
 									>
 										{board?.title}
-									</MenuItem>
+									</option>
 								)
 							})}
        				</Select>
